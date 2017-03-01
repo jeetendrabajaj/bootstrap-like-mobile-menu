@@ -1,0 +1,110 @@
+<?php
+/**
+ * @file
+ * A bootstrap like mobile menu block to be displayed on desktop website
+ * Author: Jeetendra Kumar Bajaj
+ * LinkedIn: https://www.linkedin.com/in/jeetendra-bajaj-14020b14/
+ * git: https://github.com/jeetendrabajaj/bootstrap-like-mobile-menu
+ */
+
+ /**
+ * Implements hook_block_info.
+ */
+function bootstrapmobilemenu_block_info() {
+	 $blocks['custom'] = array('info' => t('Bootstrap like mobile menu'));
+	 return $blocks;
+}
+
+
+
+/**
+* Implements hook_menu().
+*/
+function bootstrapmobilemenu_menu() {
+	$items['admin/config/development/bootstrapmobilemenu'] = array(
+	'title' => 'Bootstrap like mobile menu configure',
+	'page callback' => 'drupal_get_form',
+	'page arguments' => array('bootstrapmobilemenu_form'),
+	'access arguments' => array('administer users'),
+	'type' => MENU_NORMAL_ITEM,
+	);
+
+	return $items;
+}
+
+
+
+/**
+* Admin form to configurable welcome message
+*/
+function bootstrapmobilemenu_form($form, &$form_state) {
+
+	$form['select_menu'] = array(
+	'#type' => 'select',
+	'#title' => t('Select menu'),
+	'#options' => menu_get_menus(),
+	'#required' => TRUE,
+	@'#default_value' => variable_get('select_menu', '')
+	);
+
+	return system_settings_form($form);
+}
+
+ /**
+ * Implements hook_block_view.
+ */
+function bootstrapmobilemenu_block_view($delta = '') {
+
+	$selected_menu = variable_get('select_menu', '');
+	$menu = menu_load_links($selected_menu);
+	$html =	'';
+	$html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
+	$html .= '<script>';
+	$html .= 'jQuery(document).ready(function(){';
+	$html .= 'jQuery(document.body).on("click",".tp-close",function() {';
+	$html .= 'jQuery(".dropdown-menu").hide("500");';
+	$html .= 'jQuery(".tp-close").css("display", "none");';
+	$html .= 'jQuery(".tp-open").css("display", "block");';
+	$html .= '});';
+	$html .= 'jQuery(document.body).on("click",".tp-open",function() {';
+	$html .= 'jQuery(".dropdown-menu").show("500");';
+	$html .= 'jQuery(".tp-open").css("display", "none");';
+	$html .= 'jQuery(".tp-close").css("display", "block");';
+	$html .= '});';
+	$html .= '});';
+	$html .= '</script>';
+	$html .= '<style type="text/css">';
+	$html .= '.tp-close{opacity:1;}.tp-close, .tp-open{cursor: pointer;} ';
+	$html .= '.tp-close:hover{opacity:1;} ';
+	//$html .= '.tp-open{cursor:pointer;}';
+	$html .= '.dropdown-menu {z-index:100000; border:none; margin-top:3px; position: absolute;}';
+	$html .= '.dropdown-menu img { height: auto; vertical-align: top; width: 25px;}';
+	$html .= '.dropdown-menu ul{background-color:rgb(63, 63, 63); list-style-type:none; width:250px; margin:0; padding:0; border-radius:4px;}';
+	$html .= '.dropdown-menu ul li{padding:10px; border-bottom:1px solid #555;}';
+	$html .= '.dropdown-menu ul li:hover{background-color:rgba(76, 75, 75, 0.8);}';
+	$html .= '.dropdown-menu ul li a{text-decoration:none; color:#fff; font-size: 14px; padding: 7px; vertical-align: bottom;}';
+	$html .= '.dropdown-menu i{color: rgb(255, 255, 255);font-size: 25px;padding-right: 10px;vertical-align: sub;}';
+	$html .= '</style>';
+	$html .= '<div class="nav-bar">';
+	$html .= '<span><img src="sites/all/modules/miri1/custom/images/menu_bar.png" class="tp-open" /></span>';
+	$html .= '<span><img src="sites/all/modules/miri1/custom/images/cross.png" class="tp-close" style="display:none;" /></span>';
+	$html .= '</div>';
+	$html .= '';
+	$html .= '<div style="display:none;" class="dropdown-menu">';
+	$html .= '<ul>';
+	foreach($menu as $key => $value){
+	       if(isset($value['options']['content']['image']))
+		$html .= '<li> <img src="'.image_style_url("thumbnail",file_load($value['options']['content']['image'])->uri).'" />  <a href="#"> '.$value['link_title'].'</a></li>';
+	       else
+		$html .= '<li> <a href="#"> '.$value['link_title'].'</a></li>';
+		
+	}
+	$html .= '';
+	$html .= '</ul>';
+	$html .= '';
+	$html .= '</div>';
+	$block['content'] = $html;
+	return $block;
+}
+
+
