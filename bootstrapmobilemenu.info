@@ -2,5 +2,5 @@ name = Bootstrap like mobile menu
 description = A bootstrap like mobile menu block to be displayed on desktop website<br/>( Author: Jeetendra Kumar Bajaj, Linked In: https://www.linkedin.com/in/jeetendra-bajaj-14020b14/ )
 core = 7.x
 dependencies[] = menuimage
-package = jeetendra
+package = bootstrap-like-mobile-menu
 version = "7.x-1.1"
