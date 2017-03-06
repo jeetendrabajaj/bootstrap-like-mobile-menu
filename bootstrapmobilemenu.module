@@ -86,8 +86,8 @@ function bootstrapmobilemenu_block_view($delta = '') {
 	$html .= '.dropdown-menu i{color: rgb(255, 255, 255);font-size: 25px;padding-right: 10px;vertical-align: sub;}';
 	$html .= '</style>';
 	$html .= '<div class="nav-bar">';
-	$html .= '<span><img src="sites/all/modules/miri1/custom/images/menu_bar.png" class="tp-open" /></span>';
-	$html .= '<span><img src="sites/all/modules/miri1/custom/images/cross.png" class="tp-close" style="display:none;" /></span>';
+	$html .= '<span><img src="sites/all/modules/bootstrap-like-mobile-menu/images/menu_bar.png" class="tp-open" /></span>';
+	$html .= '<span><img src="sites/all/modules/bootstrap-like-mobile-menu/images/cross.png" class="tp-close" style="display:none;" /></span>';
 	$html .= '</div>';
 	$html .= '';
 	$html .= '<div style="display:none;" class="dropdown-menu">';
